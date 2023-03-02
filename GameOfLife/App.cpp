@@ -12,6 +12,7 @@ App::~App() {
 
 bool App::OnInit() {
 
-
+	gameWindow = new MainWindow();
+	gameWindow->Show();
 	return true;
 }
