@@ -4,9 +4,9 @@
 class DrawingPanel : public wxPanel
 {
 public:
-	DrawingPanel();
+	DrawingPanel(wxWindow* parent);
 	~DrawingPanel();
-	void OnPaint(wxPaintEvent& event);
+	void OnPaint(wxPaintEvent& _event);
 
 private:
 

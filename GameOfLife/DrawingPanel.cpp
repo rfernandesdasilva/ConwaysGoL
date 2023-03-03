@@ -2,7 +2,7 @@
 #include "wx/graphics.h";
 #include "wx/dcbuffer.h";	
 
-DrawingPanel::DrawingPanel() : wxPanel(this, wxID_ANY, wxPoint(0,0), wxSize(150,150)){
+DrawingPanel::DrawingPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxPoint(0,0), wxSize(150,150)){
 
 	// There is need to have control over the rendering of the DrawingPanel. 
 	//In order to tell this to the wxPanel
@@ -20,7 +20,6 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	wxAutoBufferedPaintDC dc(this);
 	dc.Clear();
 
-
 	// Next there is need for what wxWidgets calls a wxGraphicsContext. Think of this like a drawing surface.
 	wxGraphicsContext* p_context;
 	p_context = wxGraphicsContext::Create(dc);
@@ -29,5 +28,9 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 		return;
 	}
 
+	p_context->SetPen(*wxBLACK);
+	p_context->SetBrush(*wxWHITE);
 
+	p_context->DrawRectangle(1,1,100,100);
+	p_context->DrawEllipse(1, 1, 200, 200);// test
 }
