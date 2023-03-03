@@ -6,7 +6,7 @@
 class App : public wxApp
 {
 private:
-	MainWindow* m_gameWindow = nullptr;
+	MainWindow* gameWindow = nullptr;
 public:
 	App();
 	~App();
