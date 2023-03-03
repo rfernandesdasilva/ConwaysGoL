@@ -9,6 +9,7 @@ public:
 	void OnPaint(wxPaintEvent& _event);
 
 private:
-
+	int gridSize = 15;
+	int cellSize = 10; // hardcoded for now
 };
 

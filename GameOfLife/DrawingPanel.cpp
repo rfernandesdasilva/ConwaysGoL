@@ -31,6 +31,27 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	p_context->SetPen(*wxBLACK);
 	p_context->SetBrush(*wxWHITE);
 
-	p_context->DrawRectangle(1,1,100,100);
-	p_context->DrawEllipse(1, 1, 200, 200);// test
+	int k = 0;
+	int p = 0;
+	
+	// -> will loop 225 times
+	// -> p is the columns. each loop it gets added by 1 and multiplied by 10 
+	// (15 squared each 10cells apart from each other)
+	// -> when it reaches a number that is divisible by 15, it resets to a new row.
+	// ->skips the 0 which is the first.
+	for (int i = 0; i < gridSize*gridSize; i++) {
+		p_context->DrawRectangle(p*cellSize, k, cellSize, cellSize);
+		p++;
+
+		if (p % gridSize == 0) {
+			if (i == 0) {
+				continue;
+			}
+			else {
+				k = k + cellSize;
+				p = 0;
+			}
+		}
+
+	}
 }
