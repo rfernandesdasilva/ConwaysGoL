@@ -39,19 +39,36 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	// (15 squared each 10cells apart from each other)
 	// -> when it reaches a number that is divisible by 15, it resets to a new row.
 	// ->skips the 0 which is the first.
+
+	//panel size
+	wxSize drawingSize = wxWindow::GetClientSize();
+	int cell_width = drawingSize.GetWidth() / gridSize;
+	int cell_height = drawingSize.GetHeight() / gridSize;
+
 	for (int i = 0; i < gridSize*gridSize; i++) {
-		p_context->DrawRectangle(p*cellSize, k, cellSize, cellSize);
+		p_context->DrawRectangle(p*cellSize, k, cell_width, cell_height);
 		p++;
+
 
 		if (p % gridSize == 0) {
 			if (i == 0) {
 				continue;
 			}
 			else {
-				k = k + cellSize;
+				k = k + cell_height;
 				p = 0;
 			}
 		}
 
 	}
+
+	////size of the drawing panel
+	//wxSize drawingSize = GetSize();
+
+	//int cell_width = drawingSize.GetWidth();
+	//int cell_height = drawingSize.GetHeight();
+
+	//wxWindow::SetSize(cell_height, cell_width);
+	////GetParent()->SetSize(GetSize());
+	
 }
