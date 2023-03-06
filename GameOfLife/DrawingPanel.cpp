@@ -46,7 +46,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	int cell_height = drawingSize.GetHeight() / gridSize;
 
 	for (int i = 0; i < gridSize*gridSize; i++) {
-		p_context->DrawRectangle(p*cellSize, k, cell_width, cell_height);
+		p_context->DrawRectangle(p*cell_width, k, cell_width, cell_height);
 		p++;
 
 
