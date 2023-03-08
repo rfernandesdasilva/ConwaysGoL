@@ -41,6 +41,9 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	// ->skips the 0 which is the first.
 
 	//panel size
+	//professor uses GetSize().x and y, and uses floats instead.
+	// interactive window'is INSANEEE use it
+
 	wxSize drawingSize = wxWindow::GetClientSize();
 	int cell_width = drawingSize.GetWidth() / gridSize;
 	int cell_height = drawingSize.GetHeight() / gridSize;
