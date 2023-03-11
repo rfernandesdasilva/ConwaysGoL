@@ -20,7 +20,6 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	generation = 0;
 	UpdateStatusBar();
 
-
 	//figure out if I can organize this into a method for reading clarity
 	p_toolBar = CreateToolBar();
 
@@ -93,4 +92,39 @@ void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
 
 void MainWindow::NextButton(wxCommandEvent& _nextEvent) {
 
+}
+
+int MainWindow::CheckNeighboors(int _row, int _column) {
+
+	//row-1, column-1          row-1, column         row - 1, column+1
+	//row, column-1            row, column           row, column+1
+	//row+1, column-1          row+1, column         row+1, column+1
+
+	// how to check if it is in bounds: 
+	// -> check if the row >= 0 && row < gridSize
+	// -> check if column >= 0 && column < gridSize
+
+	// the algorithm will run max 8 times, as it is the max amount of neighboors possible.
+	// i and j have to start on -1 so it checks those ranges first.
+
+	int result = 0;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			if (i == 0 && j == 0) {
+				continue;
+			}
+
+			int neighborRow = _row + i;
+			int neighborColumn = _column + j;
+
+			if (neighborRow >= 0 && neighborRow < gridSize && neighborColumn >= 0 && neighborColumn < gridSize) {
+				if (v_board[i][j]) {
+					result++;
+				}
+			}
+		}
+	}
+
+
+	return result;
 }
