@@ -151,9 +151,13 @@ void MainWindow::CreateNextGen() {
 		sandbox[i].resize(gridSize);
 	}
 
+	livingCells = 0;
 	for (int i = 0; i < gridSize; i++) {
 		for (int j = 0; j < gridSize; j++) {
 			int count = CheckNeighboors(i, j);
+			if (v_board[i][j]) {
+				livingCells++;
+			}
 			
 			if (v_board[i][j] && count < 2) {
 				sandbox[i][j] = false;
@@ -169,7 +173,6 @@ void MainWindow::CreateNextGen() {
 				{
 					if (v_board[i][j]) {
 						sandbox[i][j] = true;
-						livingCells++;
 						continue;
 					}
 				}
