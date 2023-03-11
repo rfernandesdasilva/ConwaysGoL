@@ -2,7 +2,8 @@
 #include "wx/graphics.h";
 #include "wx/dcbuffer.h";	
 
-DrawingPanel::DrawingPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY, wxPoint(0,0), wxSize(150,150)){
+DrawingPanel::DrawingPanel(wxWindow* parent) 
+	: wxPanel(parent, wxID_ANY, wxPoint(0,0), wxSize(150,150)){
 
 	// There is need to have control over the rendering of the DrawingPanel. 
 	//In order to tell this to the wxPanel
@@ -54,7 +55,6 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 		p_context->DrawRectangle(p* cell_width, k, cell_width, cell_height);
 		p++;
 
-
 		if (p % gridSize == 0) {
 			if (i == 0) {
 				continue;
@@ -66,14 +66,13 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 		}
 
 	}
+}
 
-	////size of the drawing panel
-	//wxSize drawingSize = GetSize();
+void DrawingPanel::SetSize(wxSize& _size) {
+	wxPanel::SetSize(_size);
+	Refresh();
+}
 
-	//int cell_width = drawingSize.GetWidth();
-	//int cell_height = drawingSize.GetHeight();
-
-	//wxWindow::SetSize(cell_height, cell_width);
-	////GetParent()->SetSize(GetSize());
-	
+void DrawingPanel::SetGridSize(int _gridSize) {
+	gridSize = _gridSize;
 }

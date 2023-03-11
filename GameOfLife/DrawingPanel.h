@@ -7,9 +7,12 @@ public:
 	DrawingPanel(wxWindow* parent);
 	~DrawingPanel();
 	void OnPaint(wxPaintEvent& _event);
+	void SetSize(wxSize& _size);
 
+	void SetGridSize(int _gridSize);
 private:
-	int gridSize = 15;
+	int gridSize;
 	int cellSize = 10; // hardcoded for now
+	//std::vector<std::vector<bool>>& r_board;
 };
 
