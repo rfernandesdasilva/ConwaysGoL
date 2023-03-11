@@ -88,7 +88,17 @@ void MainWindow::PauseButton(wxCommandEvent& _pauseEvent) {
 }
 
 void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
+	livingCells = 0;
+ 	generation = 0;
 
+	for (int i = 0; i < gridSize; i++) {
+		for (int j = 0; j < gridSize; j++) {
+			v_board[i][j] = false;
+		}
+	}
+
+	UpdateStatusBar();
+	Refresh();
 }
 
 void MainWindow::NextButton(wxCommandEvent& _nextEvent) {
@@ -135,30 +145,30 @@ void MainWindow::CreateNextGen() {
 
 	for (int i = 0; i < gridSize; i++) {
 		for (int j = 0; j < gridSize; j++) {
-			if (v_board[i][j]) {
-				livingCells++;
-			}
-
 			int count = CheckNeighboors(i, j);
 			
 			if (v_board[i][j] && count < 2) {
 				sandbox[i][j] = false;
+				livingCells--;
 				continue;
 			} 
 			if (v_board[i][j] && count > 3) {
 				sandbox[i][j] = false;
+				livingCells--;
 				continue;
 			}
 			if (count == 2 || count == 3) {
 				{
 					if (v_board[i][j]) {
 						sandbox[i][j] = true;
+						livingCells++;
 						continue;
 					}
 				}
 			}
 			if (!v_board[i][j] && count == 3) {
 				sandbox[i][j] = true;
+				livingCells++;
 				continue;
 			}
 		}
