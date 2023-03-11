@@ -141,19 +141,23 @@ void MainWindow::CreateNextGen() {
 
 			int count = CheckNeighboors(i, j);
 			
-			if (count < 2) {
+			if (v_board[i][j] && count < 2) {
 				sandbox[i][j] = false;
 				continue;
 			} 
-			if (count > 3) {
+			if (v_board[i][j] && count > 3) {
 				sandbox[i][j] = false;
 				continue;
 			}
 			if (count == 2 || count == 3) {
-				sandbox[i][j] = true;
-				continue;
+				{
+					if (v_board[i][j]) {
+						sandbox[i][j] = true;
+						continue;
+					}
+				}
 			}
-			if (v_board[i][j] == false && count == 3) {
+			if (!v_board[i][j] && count == 3) {
 				sandbox[i][j] = true;
 				continue;
 			}
