@@ -33,39 +33,21 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	p_context->SetPen(*wxBLACK);
 	p_context->SetBrush(*wxWHITE);
 
-	int k = 0;
-	int p = 0;
-	
-	// -> will loop 225 times
-	// -> p is the columns. each loop it gets added by 1 and multiplied by 10 
-	// (15 squared each 10cells apart from each other)
-	// -> when it reaches a number that is divisible by 15, it resets to a new row.
-	// ->skips the 0 which is the first.
-
 	//panel size
 	//professor uses GetSize().x and y, and uses floats instead.
 	// interactive window'is INSANEEE use it
 
-	wxSize drawingSize = wxWindow::GetClientSize();
-	int cell_width = drawingSize.GetWidth() / gridSize;
-	int cell_height = drawingSize.GetHeight() / gridSize;
+	float cell_width = GetSize().x / (float)gridSize;
+	float cell_height = GetSize().y / (float)gridSize;
 
-
-	for (int i = 0; i < gridSize*gridSize; i++) {
-		// p* multiplied by the width that we just got in the code up there
-		p_context->DrawRectangle(p* cell_width, k, cell_width, cell_height);
-		p++;
-
-		if (p % gridSize == 0) {
-			if (i == 0) {
-				continue;
+	for (int i = 0; i < gridSize; i++) {
+		for (int j = 0; j < gridSize; j++) {
+			if (r_board[i][j]) {
+				p_context->SetBrush(*wxLIGHT_GREY);
 			}
-			else {
-				k = k + cell_height;
-				p = 0;
-			}
+			p_context->DrawRectangle(i * cell_width, j* cell_height, cell_width, cell_height);
+			p_context->SetBrush(*wxWHITE);
 		}
-
 	}
 }
 
