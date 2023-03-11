@@ -11,11 +11,24 @@ private:
 	std::vector<std::vector<bool>> v_board;
 
 	int gridSize = 15;
+
+	int generation;
+	int livingCells;
+	wxStatusBar* p_statusBar;
+
+	wxToolBar* p_toolBar;
 public:
 	MainWindow();
 	~MainWindow();
 	void onResize(wxSizeEvent& _event);
 	void InitGrid();
+	void UpdateStatusBar();
+
+	void PlayButton(wxCommandEvent& _playEvent);
+	void PauseButton(wxCommandEvent& _pauseEvent);
+	void TrashButton(wxCommandEvent& _trashEvent);
+	void NextButton(wxCommandEvent& _nextEvent);
+
 	wxDECLARE_EVENT_TABLE();
 };
 
