@@ -7,8 +7,9 @@
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
 EVT_SIZE(MainWindow::onResize)
 EVT_MENU(10998, MainWindow::PlayButton)
-EVT_MENU(10998, MainWindow::PauseButton)
-EVT_MENU(10998, MainWindow::TrashButton)
+EVT_MENU(20998, MainWindow::PauseButton)
+EVT_MENU(26754, MainWindow::TrashButton)
+EVT_MENU(12345, MainWindow::NextButton)
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
@@ -30,10 +31,10 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_toolBar->AddTool(20998, "Pause", pauseIcon);
 
 	wxBitmap trashIcon(trash_xpm);
-	p_toolBar->AddTool(30998, "Trash", trashIcon);
+	p_toolBar->AddTool(26754, "Trash", trashIcon);
 	
 	wxBitmap nextIcon(next_xpm);
-	p_toolBar->AddTool(40998, "Next", nextIcon);
+	p_toolBar->AddTool(12345, "Next", nextIcon);
 
 	p_toolBar->Realize(); // render the icons onto the screen
 
@@ -91,7 +92,7 @@ void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
 }
 
 void MainWindow::NextButton(wxCommandEvent& _nextEvent) {
-
+	CreateNextGen();
 }
 
 int MainWindow::CheckNeighboors(int _row, int _column) {
@@ -108,18 +109,13 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 	// i and j have to start on -1 so it checks those ranges first.
 
 	int result = 0;
-	for (int i = -1; i <= 1; i++) {
-		for (int j = -1; j <= 1; j++) {
-			if (i == 0 && j == 0) {
-				continue;
-			}
-
-			int neighborRow = _row + i;
-			int neighborColumn = _column + j;
-
-			if (neighborRow >= 0 && neighborRow < gridSize && neighborColumn >= 0 && neighborColumn < gridSize) {
-				if (v_board[i][j]) {
-					result++;
+	for (int i = _row-1; i <= _row+1; i++) {
+		for (int j = _column-1; j <= _column+1; j++) {
+			if (i >= 0 && i < gridSize && j >= 0 && j < gridSize) {
+				if (i != _row || j != _column) {
+					if (v_board[i][j]) {
+						result++;
+					}
 				}
 			}
 		}
@@ -127,4 +123,45 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 
 
 	return result;
+}
+
+void MainWindow::CreateNextGen() {
+
+	std::vector<std::vector<bool>> sandbox;
+	sandbox.resize(gridSize);
+	for (int i = 0; i < sandbox.size(); i++) {
+		sandbox[i].resize(gridSize);
+	}
+
+	for (int i = 0; i < gridSize; i++) {
+		for (int j = 0; j < gridSize; j++) {
+			if (v_board[i][j]) {
+				livingCells++;
+			}
+
+			int count = CheckNeighboors(i, j);
+			
+			if (count < 2) {
+				sandbox[i][j] = false;
+				continue;
+			} 
+			if (count > 3) {
+				sandbox[i][j] = false;
+				continue;
+			}
+			if (count == 2 || count == 3) {
+				sandbox[i][j] = true;
+				continue;
+			}
+			if (v_board[i][j] == false && count == 3) {
+				sandbox[i][j] = true;
+				continue;
+			}
+		}
+	}
+
+	v_board.swap(sandbox);
+	generation++;
+	UpdateStatusBar();
+	Refresh();
 }

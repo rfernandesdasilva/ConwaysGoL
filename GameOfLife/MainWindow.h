@@ -28,7 +28,10 @@ public:
 	void PauseButton(wxCommandEvent& _pauseEvent);
 	void TrashButton(wxCommandEvent& _trashEvent);
 	void NextButton(wxCommandEvent& _nextEvent);
+
 	int CheckNeighboors(int _row, int _column);
+
+	void CreateNextGen();
 
 	wxDECLARE_EVENT_TABLE();
 };
