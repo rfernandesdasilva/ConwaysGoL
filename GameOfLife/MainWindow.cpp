@@ -10,6 +10,7 @@ EVT_MENU(10998, MainWindow::PlayButton)
 EVT_MENU(20998, MainWindow::PauseButton)
 EVT_MENU(26754, MainWindow::TrashButton)
 EVT_MENU(12345, MainWindow::NextButton)
+EVT_TIMER(14896, MainWindow::TimedEvent)
 wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
@@ -20,6 +21,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	livingCells = 0;
 	generation = 0;
 	UpdateStatusBar();
+
+	p_timer = new wxTimer(this, 14896); // randomID
 
 	//figure out if I can organize this into a method for reading clarity
 	p_toolBar = CreateToolBar();
@@ -80,11 +83,12 @@ void MainWindow::InitGrid() {
 }
 
 void MainWindow::PlayButton(wxCommandEvent& _playEvent) {
-
+	p_timer->Start(milliseconds);
+	Refresh();
 }
 
 void MainWindow::PauseButton(wxCommandEvent& _pauseEvent) {
-
+	p_timer->Stop();
 }
 
 void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
@@ -135,6 +139,10 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 	return result;
 }
 
+void MainWindow::TimedEvent(wxTimerEvent& _timer) {
+	CreateNextGen();
+}
+
 void MainWindow::CreateNextGen() {
 
 	std::vector<std::vector<bool>> sandbox;
@@ -179,3 +187,5 @@ void MainWindow::CreateNextGen() {
 	UpdateStatusBar();
 	Refresh();
 }
+
+

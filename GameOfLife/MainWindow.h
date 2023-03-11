@@ -17,6 +17,10 @@ private:
 	wxStatusBar* p_statusBar;
 
 	wxToolBar* p_toolBar;
+
+	wxTimer* p_timer;
+	int milliseconds = 50;
+
 public:
 	MainWindow();
 	~MainWindow();
@@ -32,6 +36,8 @@ public:
 	int CheckNeighboors(int _row, int _column);
 
 	void CreateNextGen();
+
+	void TimedEvent(wxTimerEvent& _timer);
 
 	wxDECLARE_EVENT_TABLE();
 };
