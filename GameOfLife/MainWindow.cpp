@@ -13,6 +13,7 @@ EVT_MENU(12345, MainWindow::NextButton)
 EVT_TIMER(14896, MainWindow::TimedEvent)
 wxEND_EVENT_TABLE()
 
+
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	wxPoint(0,0), wxSize(400,400)) {
 
