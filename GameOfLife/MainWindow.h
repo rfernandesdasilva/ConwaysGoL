@@ -16,5 +16,6 @@ public:
 	~MainWindow();
 	void onResize(wxSizeEvent& _event);
 	void InitGrid();
+	wxDECLARE_EVENT_TABLE();
 };
 

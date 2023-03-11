@@ -2,6 +2,11 @@
 #include "wx/graphics.h";
 #include "wx/dcbuffer.h";	
 
+wxBEGIN_EVENT_TABLE(DrawingPanel, wxPanel)
+EVT_PAINT(DrawingPanel::OnPaint)
+EVT_LEFT_UP(DrawingPanel::OnClick)
+wxEND_EVENT_TABLE()
+
 DrawingPanel::DrawingPanel(wxWindow* parent, std::vector<std::vector<bool>>& p_board)
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(150, 150)), r_board(p_board) {
 
@@ -10,8 +15,6 @@ DrawingPanel::DrawingPanel(wxWindow* parent, std::vector<std::vector<bool>>& p_b
 	this->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
 	//In the DrawingPanel cpp file, the wxPanel needs to know to use the OnPaint method when it renders.
-	this->Bind(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
-	this->Bind(wxEVT_LEFT_UP, &DrawingPanel::OnClick, this);
 }
 
 DrawingPanel::~DrawingPanel() {
