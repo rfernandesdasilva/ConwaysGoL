@@ -3,7 +3,7 @@
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	wxPoint(0,0), wxSize(400,400)) {
-	p_drawingPanel = new DrawingPanel(this);
+	p_drawingPanel = new DrawingPanel(this, v_board);
 	p_sizer = new wxBoxSizer(wxVERTICAL);
 
 	p_sizer->Add(p_drawingPanel,1, wxEXPAND | wxALL);

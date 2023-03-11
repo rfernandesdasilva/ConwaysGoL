@@ -2,8 +2,8 @@
 #include "wx/graphics.h";
 #include "wx/dcbuffer.h";	
 
-DrawingPanel::DrawingPanel(wxWindow* parent) 
-	: wxPanel(parent, wxID_ANY, wxPoint(0,0), wxSize(150,150)){
+DrawingPanel::DrawingPanel(wxWindow* parent, std::vector<std::vector<bool>>& p_board)
+	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(150, 150)), r_board(p_board) {
 
 	// There is need to have control over the rendering of the DrawingPanel. 
 	//In order to tell this to the wxPanel
@@ -11,6 +11,7 @@ DrawingPanel::DrawingPanel(wxWindow* parent)
 
 	//In the DrawingPanel cpp file, the wxPanel needs to know to use the OnPaint method when it renders.
 	this->Bind(wxEVT_PAINT, &DrawingPanel::OnPaint, this);
+	this->Bind(wxEVT_LEFT_UP, &DrawingPanel::OnClick, this);
 }
 
 DrawingPanel::~DrawingPanel() {
@@ -75,4 +76,19 @@ void DrawingPanel::SetSize(wxSize& _size) {
 
 void DrawingPanel::SetGridSize(int _gridSize) {
 	gridSize = _gridSize;
+}
+
+void DrawingPanel::OnClick(wxMouseEvent& _mouseEvent) {
+	int x = _mouseEvent.GetX();
+	int y = _mouseEvent.GetY();
+
+	wxSize drawingSize = wxWindow::GetClientSize();
+	int cell_width = drawingSize.GetWidth() / gridSize;
+	int cell_height = drawingSize.GetHeight() / gridSize;
+
+	int column = x / cell_width;
+	int row = y / cell_height;
+
+	r_board[column][row] = true;
+	Refresh();
 }
