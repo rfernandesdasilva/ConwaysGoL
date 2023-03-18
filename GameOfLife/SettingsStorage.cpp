@@ -5,7 +5,6 @@ EVT_SPINCTRL(15000,SettingsStorage::OnSpinCtrl)
 EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl)
 wxEND_EVENT_TABLE()
 
-
 SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings) 
 	: wxDialog(_parent, wxID_ANY, "Cell Settings") {
 	
@@ -86,7 +85,9 @@ void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 // - should the window close on clicking ok? I think so!
 // - color for deadCells, and color for liveCells. this means we need a way to select between them, or two different 
 // color pickers.
-// 
+// - on clicking Ok, it is refreshing the dialog window.
+// - review the SettingsStorage events, as I feel there is something wrong with the colorPick event.
+// - review class/file Names, as they are really bad rn.
 
 
 
