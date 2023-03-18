@@ -1,7 +1,9 @@
 #pragma once
 
 #include "wx/wx.h"
-#include "DrawingPanel.h";
+#include "DrawingPanel.h"
+#include "SettingsStorage.h"
+#include "Settings.h"
 
 class MainWindow : public wxFrame
 {
@@ -10,7 +12,9 @@ private:
 	wxBoxSizer* p_sizer;
 	std::vector<std::vector<bool>> v_board;
 
-	int gridSize = 15;
+	//settings
+	SettingsBar* p_settings;
+	SettingsStorage* p_settingsDialog;
 
 	int generation;
 	int livingCells;
@@ -20,6 +24,8 @@ private:
 
 	wxTimer* p_timer;
 	int milliseconds = 50;
+
+	wxMenuBar* p_menuBar;
 
 public:
 	MainWindow();
@@ -38,6 +44,9 @@ public:
 	void CreateNextGen();
 
 	void TimedEvent(wxTimerEvent& _timer);
+
+	//menuEvent
+	void OnMenu(wxCommandEvent& _menuEvent);
 
 	wxDECLARE_EVENT_TABLE();
 };

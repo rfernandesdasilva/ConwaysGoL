@@ -4,13 +4,22 @@
 #include "trash.xpm"
 #include "next.xpm"
 
+#include "SettingsStorage.h"
+
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
+
+//windowResize
 EVT_SIZE(MainWindow::onResize)
-EVT_MENU(10998, MainWindow::PlayButton)
+
+//play, pause, clear, next, timedEvent(for pause)
+EVT_MENU(10998, MainWindow::PlayButton) 
 EVT_MENU(20998, MainWindow::PauseButton)
 EVT_MENU(26754, MainWindow::TrashButton)
 EVT_MENU(12345, MainWindow::NextButton)
 EVT_TIMER(14896, MainWindow::TimedEvent)
+
+//menuBar
+EVT_MENU(19981,MainWindow::OnMenu)
 wxEND_EVENT_TABLE()
 
 
@@ -41,6 +50,20 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_toolBar->AddTool(12345, "Next", nextIcon);
 
 	p_toolBar->Realize(); // render the icons onto the screen
+
+	// settings
+	p_settings = new SettingsBar();
+
+	// menuBar
+	p_menuBar = new wxMenuBar();
+	this->SetMenuBar(p_menuBar);
+
+	// menu Options
+	wxMenu* p_menuOptions = new wxMenu();
+	p_menuOptions->Append(19981, "Cell Color//TEMP"); // append the menuOption
+
+	// append the menuBar
+	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
 
 	//drawing panel
 	p_drawingPanel = new DrawingPanel(this, v_board);
@@ -74,13 +97,13 @@ void MainWindow::onResize(wxSizeEvent& _event) {
 }
 
 void MainWindow::InitGrid() {
-	v_board.resize(gridSize);
+	v_board.resize(p_settings->gridSize);
 
 	for (int i = 0; i < v_board.size(); i++) {
-		v_board[i].resize(gridSize);
+		v_board[i].resize(p_settings->gridSize);
 	}
 
-	p_drawingPanel->SetGridSize(gridSize);
+	p_drawingPanel->SetGridSize(p_settings->gridSize);
 }
 
 void MainWindow::PlayButton(wxCommandEvent& _playEvent) {
@@ -96,8 +119,8 @@ void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
 	livingCells = 0;
  	generation = 0;
 
-	for (int i = 0; i < gridSize; i++) {
-		for (int j = 0; j < gridSize; j++) {
+	for (int i = 0; i < p_settings->gridSize; i++) {
+		for (int j = 0; j < p_settings->gridSize; j++) {
 			v_board[i][j] = false;
 		}
 	}
@@ -126,7 +149,7 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 	int result = 0;
 	for (int i = _row-1; i <= _row+1; i++) {
 		for (int j = _column-1; j <= _column+1; j++) {
-			if (i >= 0 && i < gridSize && j >= 0 && j < gridSize) {
+			if (i >= 0 && i < p_settings->gridSize && j >= 0 && j < p_settings->gridSize) {
 				if (i != _row || j != _column) {
 					if (v_board[i][j]) {
 						result++;
@@ -147,14 +170,14 @@ void MainWindow::TimedEvent(wxTimerEvent& _timer) {
 void MainWindow::CreateNextGen() {
 
 	std::vector<std::vector<bool>> sandbox;
-	sandbox.resize(gridSize);
+	sandbox.resize(p_settings->gridSize);
 	for (int i = 0; i < sandbox.size(); i++) {
-		sandbox[i].resize(gridSize);
+		sandbox[i].resize(p_settings->gridSize);
 	}
 
 	livingCells = 0;
-	for (int i = 0; i < gridSize; i++) {
-		for (int j = 0; j < gridSize; j++) {
+	for (int i = 0; i < p_settings->gridSize; i++) {
+		for (int j = 0; j < p_settings->gridSize; j++) {
 			int count = CheckNeighboors(i, j);
 			if (v_board[i][j]) {
 				livingCells++;
@@ -191,5 +214,17 @@ void MainWindow::CreateNextGen() {
 	UpdateStatusBar();
 	Refresh();
 }
+
+void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
+	p_settingsDialog = new SettingsStorage(this, p_settings);
+	p_settingsDialog->ShowModal();
+	
+	if (p_settingsDialog->ShowModal() == wxID_OK) {
+		InitGrid();
+		Refresh();
+	}
+}
+
+
 
 

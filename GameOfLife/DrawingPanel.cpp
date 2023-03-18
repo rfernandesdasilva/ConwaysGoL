@@ -40,11 +40,11 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	//professor uses GetSize().x and y, and uses floats instead.
 	// interactive window'is INSANEEE use it
 
-	float cell_width = GetSize().x / (float)gridSize;
-	float cell_height = GetSize().y / (float)gridSize;
+	float cell_width = GetSize().x / (float)p_settings.gridSize;
+	float cell_height = GetSize().y / (float)p_settings.gridSize;
 
-	for (int i = 0; i < gridSize; i++) {
-		for (int j = 0; j < gridSize; j++) {
+	for (int i = 0; i < p_settings.gridSize; i++) {
+		for (int j = 0; j < p_settings.gridSize; j++) {
 			if (r_board[i][j]) {
 				p_context->SetBrush(*wxLIGHT_GREY);
 			}
@@ -60,7 +60,7 @@ void DrawingPanel::SetSize(wxSize& _size) {
 }
 
 void DrawingPanel::SetGridSize(int _gridSize) {
-	gridSize = _gridSize;
+	p_settings.gridSize = _gridSize;
 }
 
 void DrawingPanel::OnClick(wxMouseEvent& _mouseEvent) {
@@ -68,8 +68,8 @@ void DrawingPanel::OnClick(wxMouseEvent& _mouseEvent) {
 	int y = _mouseEvent.GetY();
 
 	wxSize drawingSize = wxWindow::GetClientSize();
-	int cell_width = drawingSize.GetWidth() / gridSize;
-	int cell_height = drawingSize.GetHeight() / gridSize;
+	int cell_width = drawingSize.GetWidth() / p_settings.gridSize;
+	int cell_height = drawingSize.GetHeight() / p_settings.gridSize;
 
 	int column = x / cell_width;
 	int row = y / cell_height;

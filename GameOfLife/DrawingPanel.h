@@ -1,5 +1,6 @@
 #pragma once
 #include "wx/wx.h"
+#include "Settings.h"
 
 class DrawingPanel : public wxPanel
 {
@@ -13,8 +14,10 @@ public:
 
 	wxDECLARE_EVENT_TABLE();
 private:
-	int gridSize;
 	int cellSize = 10; // hardcoded for now
 	std::vector<std::vector<bool>>& r_board;
+
+	//settings
+	SettingsBar p_settings;
 };
 
