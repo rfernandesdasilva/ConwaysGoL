@@ -76,4 +76,17 @@ void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 	Refresh();
 }
 
+// TODO: 
+// - fix the layout of the dialog.
+// - understand how the saveData and loadData have to be called.
+// - review the way I am passing pointers between classes; i feel there is something wrong there.
+// - the interval is working properly, but the RBG saving is not.
+// - randomize
+// - rename TEMP naming labels
+// - should the window close on clicking ok? I think so!
+// - color for deadCells, and color for liveCells. this means we need a way to select between them, or two different 
+// color pickers.
+// 
+
+
 
