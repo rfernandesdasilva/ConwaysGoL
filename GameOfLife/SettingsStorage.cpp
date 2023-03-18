@@ -7,7 +7,7 @@ wxEND_EVENT_TABLE()
 
 
 SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings) 
-	: wxDialog(_parent, wxID_ANY, "Sample Title") {
+	: wxDialog(_parent, wxID_ANY, "Cell Settings") {
 	
 	p_settings = _settings;
 
