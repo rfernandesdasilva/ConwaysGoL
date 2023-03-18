@@ -215,6 +215,10 @@ void MainWindow::CreateNextGen() {
 	Refresh();
 }
 
+// todo:
+// make the window prettier
+// actually change the things with the values. the event handlers in the settingsDialog are not yet configured
+
 void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
 	p_settingsDialog = new SettingsStorage(this, p_settings);
 	p_settingsDialog->ShowModal();
