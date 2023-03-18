@@ -1,6 +1,7 @@
 #pragma once
 
 #include "wx/wx.h"
+#include <fstream>
 
 struct SettingsBar {
 
@@ -38,5 +39,19 @@ struct SettingsBar {
 		redDead = _deadColor.GetRed();
 		greenDead = _deadColor.GetGreen();
 		blueDead = _deadColor.GetBlue();
+	}
+
+	void LoadData() {
+		//Load Data
+		std::ifstream file("settings.bin", std::ios::binary | std::ios::in);
+		file.read((char*)this, sizeof(SettingsBar));
+		file.close();
+	}
+
+	void SaveData() {
+		//Save Data
+		std::ofstream file("settings.bin", std::ios::out | std::ios::binary);
+		file.write((char*)this, sizeof(SettingsBar));
+		file.close();
 	}
 };
