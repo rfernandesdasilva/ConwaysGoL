@@ -23,7 +23,7 @@ private:
 	wxToolBar* p_toolBar;
 
 	wxTimer* p_timer;
-	int milliseconds = 50;
+	//int milliseconds = 50; deprecated, using p_settings->interval
 
 	wxMenuBar* p_menuBar;
 

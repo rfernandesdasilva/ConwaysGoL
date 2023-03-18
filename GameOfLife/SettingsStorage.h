@@ -22,5 +22,7 @@ private:
 	wxBoxSizer* p_sizerMainBox;
 	wxSpinCtrl* spinCtrl;
 	wxColourPickerCtrl* colorCtrl;
+
+	SettingsBar* p_settings;
 };
 

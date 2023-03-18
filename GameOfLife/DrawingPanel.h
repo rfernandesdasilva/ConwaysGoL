@@ -18,6 +18,6 @@ private:
 	std::vector<std::vector<bool>>& r_board;
 
 	//settings
-	SettingsBar p_settings;
+	SettingsBar* p_settings;
 };
 

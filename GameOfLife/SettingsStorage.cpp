@@ -9,6 +9,8 @@ wxEND_EVENT_TABLE()
 SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings) 
 	: wxDialog(_parent, wxID_ANY, "Sample Title") {
 	
+	p_settings = _settings;
+
 	// vertically
 	p_sizerMainBox = new wxBoxSizer(wxVERTICAL);
 
@@ -26,6 +28,7 @@ SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings)
 	p_sizerMainBox->Add(CreateSettingBoxClrPicker());
 
 	wxSizer* button = CreateButtonSizer(wxOK | wxCANCEL);
+	p_sizerMainBox->Add(button);
 }
 
 SettingsStorage::~SettingsStorage() {
@@ -36,7 +39,7 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxSpinCtrl() {
 	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
 	
 	// label creation
-	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Setting1//TEMP");
+	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Interval(ms): //TEMP");
 
 	spinCtrl = new wxSpinCtrl(this, 15000, "Test");
 
@@ -50,7 +53,7 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxClrPicker() {
 	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
 
 	// label creation
-	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Setting2//TEMP");
+	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Cell Color: //TEMP");
 
 	colorCtrl = new wxColourPickerCtrl(this, 15051);
 
@@ -60,11 +63,17 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxClrPicker() {
 	return p_sizerSetting;
 }
 
+// maximum allowed value is 100. need to configure this?
+// no negative values.
 void SettingsStorage::OnSpinCtrl(wxSpinEvent& _event) {
-	// do something
+	p_settings->interval = _event.GetValue();
 }
 void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
-	// do something
+	wxColor color = _event.GetColour();
+	p_settings->redLive = color.GetRed();
+	p_settings->greenLive = color.GetGreen();
+	p_settings->blueLive = color.GetBlue();
+	Refresh();
 }
 
 

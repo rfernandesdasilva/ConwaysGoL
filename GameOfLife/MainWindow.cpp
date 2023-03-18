@@ -60,7 +60,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 
 	// menu Options
 	wxMenu* p_menuOptions = new wxMenu();
-	p_menuOptions->Append(19981, "Cell Color//TEMP"); // append the menuOption
+	p_menuOptions->Append(19981, "Cell Configuration//TEMP"); // append the menuOption
 
 	// append the menuBar
 	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
@@ -107,7 +107,7 @@ void MainWindow::InitGrid() {
 }
 
 void MainWindow::PlayButton(wxCommandEvent& _playEvent) {
-	p_timer->Start(milliseconds);
+	p_timer->Start(p_settings->interval);
 	Refresh();
 }
 
