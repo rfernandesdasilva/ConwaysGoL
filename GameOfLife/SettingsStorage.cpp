@@ -5,8 +5,8 @@ EVT_SPINCTRL(15000,SettingsStorage::OnSpinCtrl)
 EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl)
 wxEND_EVENT_TABLE()
 
-SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings) 
-	: wxDialog(_parent, wxID_ANY, "Cell Settings") {
+SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName) 
+	: wxDialog(_parent, wxID_ANY, labelName) { // passed labelName to change windowName based on which configuration
 	
 	p_settings = _settings;
 
@@ -66,13 +66,15 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxClrPicker() {
 // no negative values.
 void SettingsStorage::OnSpinCtrl(wxSpinEvent& _event) {
 	p_settings->interval = _event.GetValue();
+	p_settings->SaveData();
 }
 void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 	wxColor color = _event.GetColour();
 	p_settings->redLive = color.GetRed();
 	p_settings->greenLive = color.GetGreen();
 	p_settings->blueLive = color.GetBlue();
-	Refresh();
+	p_settings->SaveData();
+	//Refresh();
 }
 
 // TODO: 

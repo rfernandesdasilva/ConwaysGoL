@@ -19,7 +19,7 @@ EVT_MENU(12345, MainWindow::NextButton)
 EVT_TIMER(14896, MainWindow::TimedEvent)
 
 //menuBar
-EVT_MENU(19981,MainWindow::OnMenu)
+EVT_MENU(19981,MainWindow::OnMenu) // cell config
 wxEND_EVENT_TABLE()
 
 
@@ -58,9 +58,13 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_menuBar = new wxMenuBar();
 	this->SetMenuBar(p_menuBar);
 
-	// menu Options
+	// menu Options - Cell Configuration
 	wxMenu* p_menuOptions = new wxMenu();
 	p_menuOptions->Append(19981, "Cell Configuration//TEMP"); // append the menuOption
+
+	// menu Options - Generation/gridSize configuration
+	wxMenu* p_menuOptionsTwo = new wxMenu();
+	p_menuOptions->Append(19982, "Generation and Size Configuration//TEMP");
 
 	// append the menuBar
 	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
@@ -220,7 +224,7 @@ void MainWindow::CreateNextGen() {
 // actually change the things with the values. the event handlers in the settingsDialog are not yet configured
 
 void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
-	p_settingsDialog = new SettingsStorage(this, p_settings);
+	p_settingsDialog = new SettingsStorage(this, p_settings, "Cell Color");
 	p_settingsDialog->ShowModal();
 	
 	if (p_settingsDialog->ShowModal() == wxID_OK) {

@@ -11,6 +11,7 @@ DrawingPanel::DrawingPanel(wxWindow* parent, std::vector<std::vector<bool>>& p_b
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(150, 150)), r_board(p_board) {
 
 	p_settings = new SettingsBar();
+
 	// There is need to have control over the rendering of the DrawingPanel. 
 	//In order to tell this to the wxPanel
 	this->SetBackgroundStyle(wxBG_STYLE_PAINT);
@@ -25,6 +26,9 @@ DrawingPanel::~DrawingPanel() {
 void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	wxAutoBufferedPaintDC dc(this);
 	dc.Clear();
+
+	//LOAD CHANGES
+	p_settings->LoadData();
 
 	// Next there is need for what wxWidgets calls a wxGraphicsContext. Think of this like a drawing surface.
 	wxGraphicsContext* p_context;
@@ -47,7 +51,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	for (int i = 0; i < p_settings->gridSize; i++) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
 			if (r_board[i][j]) {
-				p_context->SetBrush(*wxLIGHT_GREY);
+				p_context->SetBrush(p_settings->getLiveCellColor()); // if the block is true, paint this color
 			}
 			p_context->DrawRectangle(i * cell_width, j* cell_height, cell_width, cell_height);
 			p_context->SetBrush(*wxWHITE);

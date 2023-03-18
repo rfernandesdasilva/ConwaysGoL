@@ -5,10 +5,12 @@
 #include "wx/clrpicker.h"
 #include "wx/spinctrl.h"
 
+#include <string>
+
 class SettingsStorage : public wxDialog
 {
 public:
-	SettingsStorage(wxWindow* _parent, SettingsBar* _settings);
+	SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName);
 	~SettingsStorage();
 
 	wxBoxSizer* CreateSettingBoxSpinCtrl(); // created these methods more for organization and reading clarity
