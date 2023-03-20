@@ -14,7 +14,8 @@ public:
 	~SettingsStorage();
 
 	wxBoxSizer* CreateSettingBoxSpinCtrl(); // created these methods more for organization and reading clarity
-	wxBoxSizer* CreateSettingBoxClrPicker();
+	wxBoxSizer* CreateLiveCellSettingBoxClrPicker();
+	wxBoxSizer* CreateDeadCellSettingBoxClrPicker();
 
 	void OnSpinCtrl(wxSpinEvent& _event);
 	void OnColourPickerCtrl(wxColourPickerEvent& _event);

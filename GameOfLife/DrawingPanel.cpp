@@ -52,9 +52,12 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
 			if (r_board[i][j]) {
 				p_context->SetBrush(p_settings->getLiveCellColor()); // if the block is true, paint this color
+				p_context->DrawRectangle(i * cell_width, j * cell_height, cell_width, cell_height);
+				continue;
 			}
+			p_context->SetBrush(p_settings->getDeadCellColor());
 			p_context->DrawRectangle(i * cell_width, j* cell_height, cell_width, cell_height);
-			p_context->SetBrush(*wxWHITE);
+			//p_context->SetBrush(p_settings->getDeadCellColor());
 		}
 	}
 }

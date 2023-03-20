@@ -62,10 +62,6 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	wxMenu* p_menuOptions = new wxMenu();
 	p_menuOptions->Append(19981, "Cell Configuration//TEMP"); // append the menuOption
 
-	// menu Options - Generation/gridSize configuration
-	wxMenu* p_menuOptionsTwo = new wxMenu();
-	p_menuOptions->Append(19982, "Generation and Size Configuration//TEMP");
-
 	// append the menuBar
 	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
 
