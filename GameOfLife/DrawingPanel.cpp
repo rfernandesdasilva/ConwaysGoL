@@ -29,6 +29,7 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 
 	//LOAD CHANGES
 	p_settings->LoadData();
+	
 
 	// Next there is need for what wxWidgets calls a wxGraphicsContext. Think of this like a drawing surface.
 	wxGraphicsContext* p_context;

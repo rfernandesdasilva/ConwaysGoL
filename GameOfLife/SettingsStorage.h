@@ -20,6 +20,9 @@ public:
 	void OnSpinCtrl(wxSpinEvent& _event);
 	void OnColourPickerCtrl(wxColourPickerEvent& _event);
 
+	wxBoxSizer* CreateNeighborCountCheckBox();
+	void OnCheckBox(wxCommandEvent& _checkBoxEvent);
+
 	wxDECLARE_EVENT_TABLE();
 private:
 	wxBoxSizer* p_sizerMainBox;

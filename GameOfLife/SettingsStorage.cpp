@@ -4,6 +4,7 @@ wxBEGIN_EVENT_TABLE(SettingsStorage, wxDialog)
 EVT_SPINCTRL(15000,SettingsStorage::OnSpinCtrl)
 EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl) // live cell id
 EVT_COLOURPICKER_CHANGED(15054, SettingsStorage::OnColourPickerCtrl) // dead cell id
+EVT_CHECKBOX(15067, SettingsStorage::OnCheckBox)
 wxEND_EVENT_TABLE()
 
 SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName) 
@@ -27,6 +28,8 @@ SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std:
 	// label wxStaticText control(this, id, text), wxColourPickerCtrl 
 	p_sizerMainBox->Add(CreateLiveCellSettingBoxClrPicker()); 
 	p_sizerMainBox->Add(CreateDeadCellSettingBoxClrPicker());
+
+	p_sizerMainBox->Add(CreateNeighborCountCheckBox());
 
 	wxSizer* button = CreateButtonSizer(wxOK | wxCANCEL);
 	p_sizerMainBox->Add(button);
@@ -69,7 +72,6 @@ wxBoxSizer* SettingsStorage::CreateLiveCellSettingBoxClrPicker() {
 wxBoxSizer* SettingsStorage::CreateDeadCellSettingBoxClrPicker() {
 	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
 	
-
 	// label creation
 	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Dead Cell Color: //TEMP");
 
@@ -106,6 +108,25 @@ void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 	}
 	
 	//Refresh();
+}
+
+wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
+	wxCheckBox* checkBox = new wxCheckBox(this, 15067, "Show Neighbor Count: //TEMP");
+	checkBox->SetValue(false);
+
+	wxBoxSizer* p_checkBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+	p_checkBoxSizer->AddStretchSpacer();
+	p_checkBoxSizer->Add(checkBox, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
+	p_checkBoxSizer->AddStretchSpacer();
+	
+	return p_checkBoxSizer;
+}
+
+void SettingsStorage::OnCheckBox(wxCommandEvent& _checkBoxEvent) {
+	if (_checkBoxEvent.IsChecked()) {
+		//p_settings->setNeighborSize();
+		//display
+	}
 }
 
 // TODO: 

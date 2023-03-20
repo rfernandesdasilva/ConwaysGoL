@@ -18,6 +18,18 @@ struct SettingsBar {
 	unsigned int redDead;
 	unsigned int greenDead;
 	unsigned int blueDead;
+
+	// show neighbor count
+	bool showCount;
+	std::vector<std::vector<int>> neighborCount;
+
+	void setNeighborSize() {
+		neighborCount.resize(gridSize);
+
+		for (int i = 0; i < neighborCount.size(); i++) {
+			neighborCount[i].resize(gridSize);
+		}
+	}
 	
 	wxColor getLiveCellColor() {
 		// get uints and change to wxcolor

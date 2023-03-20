@@ -153,6 +153,7 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 				if (i != _row || j != _column) {
 					if (v_board[i][j]) {
 						result++;
+						//p_settings->neighborCount[i][j] = +result;
 					}
 				}
 			}
