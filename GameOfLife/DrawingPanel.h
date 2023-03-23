@@ -12,6 +12,8 @@ public:
 	void SetGridSize(int _gridSize);
 	void OnClick(wxMouseEvent& _mouseEvent);
 
+	int CheckNeighboors(int _row, int _column); // calculateneigh
+
 	wxDECLARE_EVENT_TABLE();
 private:
 	int cellSize = 10; // hardcoded for now
@@ -19,5 +21,8 @@ private:
 
 	//settings
 	SettingsBar* p_settings;
+
+	//show count
+	std::vector<std::vector<int>> neighborCount;
 };
 

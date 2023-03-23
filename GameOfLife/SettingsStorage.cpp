@@ -124,8 +124,8 @@ wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
 
 void SettingsStorage::OnCheckBox(wxCommandEvent& _checkBoxEvent) {
 	if (_checkBoxEvent.IsChecked()) {
-		//p_settings->setNeighborSize();
-		//display
+		p_settings->showCount = true;
+		
 	}
 }
 

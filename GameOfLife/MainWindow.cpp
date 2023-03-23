@@ -153,14 +153,11 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 				if (i != _row || j != _column) {
 					if (v_board[i][j]) {
 						result++;
-						//p_settings->neighborCount[i][j] = +result;
 					}
 				}
 			}
 		}
 	}
-
-
 	return result;
 }
 
@@ -180,6 +177,8 @@ void MainWindow::CreateNextGen() {
 	for (int i = 0; i < p_settings->gridSize; i++) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
 			int count = CheckNeighboors(i, j);
+			p_settings->neighborCount[i][j] = count;
+			
 			if (v_board[i][j]) {
 				livingCells++;
 			}
