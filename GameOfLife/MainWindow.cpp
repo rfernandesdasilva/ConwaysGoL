@@ -34,6 +34,11 @@ EVT_MENU(wxID_SAVE, MainWindow::OnSave)
 EVT_MENU(wxID_SAVEAS, MainWindow::OnSaveAs)
 EVT_MENU(wxID_EXIT, MainWindow::OnExit)
 
+//universeTypes
+EVT_MENU(12785, MainWindow::OnToroidalToggle)
+EVT_MENU(17942, MainWindow::OnFiniteToggle) 
+EVT_MENU(12781, MainWindow::OnShowCountToggle)
+
 //menuBar
 EVT_MENU(19981,MainWindow::OnMenu) // cell config
 wxEND_EVENT_TABLE()
@@ -94,12 +99,25 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_fileOptions->AppendSeparator();
 	p_fileOptions->Append(wxID_EXIT, "E&xit\tAlt+F4");
 
+	// view Settings
+	p_viewSettings = new wxMenu();
+	p_FiniteOption = new wxMenuItem(p_viewSettings, 17942, "Finite Toggle", "", wxITEM_CHECK);
+	p_ToroidalOption = new wxMenuItem(p_viewSettings, 12785, "Toroidal Toggle", "", wxITEM_CHECK);
+	p_viewNeighbors = new wxMenuItem(p_viewSettings, 12781, "Display Neighbor Count", "", wxITEM_CHECK);
+	
+	p_FiniteOption->SetCheckable(true);
+	p_ToroidalOption->SetCheckable(true);
+	p_viewNeighbors->SetCheckable(true);
+
+	p_viewSettings->Append(p_FiniteOption);
+	p_viewSettings->Append(p_ToroidalOption);
+	p_viewSettings->Append(p_viewNeighbors);
 
 	// append the menuBar
 	p_menuBar->Append(p_fileOptions, "File");
+	p_menuBar->Append(p_viewSettings, "View");
 	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
 	p_menuBar->Append(p_randomOptions, "Randomize");
-
 
 	//drawing panel
 	p_drawingPanel = new DrawingPanel(this, v_board, neighborCount, p_settings);
@@ -195,7 +213,7 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 			int checkRow = _row + i;
 			int checkCol = _column + j;
 
-			if (p_settings->Finite) {
+			if (p_settings->isFinite) {
 				if (checkRow < 0 || checkCol < 0) {
 					continue;
 				}
@@ -477,6 +495,47 @@ void MainWindow::OnSaveAs(wxCommandEvent& _saveAsEvent) {
 
 void MainWindow::OnExit(wxCommandEvent& _exitEvent) {
 	Close();
+}
+
+void MainWindow::OnToroidalToggle(wxCommandEvent& _toroidalEvent) {
+	if(!p_settings->isToroidal) {
+		p_ToroidalOption->Check(true);
+		p_settings->isToroidal = true;
+		p_settings->isFinite = false;
+		p_FiniteOption->Check(false);
+	}
+	else {
+		p_ToroidalOption->Check(false);
+		p_settings->isToroidal = false;
+		p_settings->isFinite = true;
+		p_FiniteOption->Check(true);
+	}
+}
+
+void MainWindow::OnFiniteToggle(wxCommandEvent& _finiteEvent) {
+	if (!p_settings->isFinite) {
+		p_FiniteOption->Check(true);
+		p_settings->isFinite = true;
+		p_settings->isToroidal = false;
+		p_ToroidalOption->Check(false);
+	}
+	else {
+		p_viewNeighbors->Check(false);
+		p_settings->isFinite = false;
+		p_settings->isToroidal = true;
+		p_ToroidalOption->Check(true);
+	}
+}
+
+void MainWindow::OnShowCountToggle(wxCommandEvent& _showCountEvent) {
+	if (!p_settings->showCount) {
+		p_viewNeighbors->Check(true);
+		p_settings->showCount = true; 
+	}
+	else {
+		p_viewNeighbors->Check(false);
+		p_settings->showCount = false;
+	}
 }
 
 

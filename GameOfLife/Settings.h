@@ -32,8 +32,8 @@ struct SettingsBar {
 	std::vector<std::vector<int>> neighborCount;
 
 	// universe type
-	bool Toroidal;
-	bool Finite;
+	bool isToroidal;
+	bool isFinite;
 
 	wxColor getLiveCellColor() {
 		// get uints and change to wxcolor

@@ -5,7 +5,6 @@ EVT_SPINCTRL(15000,SettingsStorage::OnSpinCtrl)
 EVT_SPINCTRL(15020, SettingsStorage::OnSpinCtrlGrid)
 EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl) // live cell id
 EVT_COLOURPICKER_CHANGED(15054, SettingsStorage::OnColourPickerCtrl) // dead cell id
-EVT_CHECKBOX(15067, SettingsStorage::OnCheckBox)
 wxEND_EVENT_TABLE()
 
 SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName) 
@@ -24,8 +23,6 @@ SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std:
 	// label wxStaticText control(this, id, text), wxColourPickerCtrl 
 	p_sizerMainBox->Add(CreateLiveCellSettingBoxClrPicker()); 
 	p_sizerMainBox->Add(CreateDeadCellSettingBoxClrPicker());
-
-	p_sizerMainBox->Add(CreateNeighborCountCheckBox());
 
 	wxSizer* button = CreateButtonSizer(wxOK | wxCANCEL);
 	p_sizerMainBox->Add(button);
@@ -136,11 +133,5 @@ wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
 	return p_checkBoxSizer;
 }
 
-void SettingsStorage::OnCheckBox(wxCommandEvent& _checkBoxEvent) {
-	if (_checkBoxEvent.IsChecked() && p_settings->showCount == false) {
-		p_settings->showCount = true;
-		p_settings->SaveData();
-	} // caso: nao está checkado e é true: turn to fasle.
-}
 
 

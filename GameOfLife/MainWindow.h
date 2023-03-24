@@ -30,6 +30,11 @@ private:
 	wxMenuBar* p_menuBar;
 	wxString fileName = wxEmptyString;
 
+	wxMenu* p_viewSettings;
+	wxMenuItem* p_FiniteOption;
+	wxMenuItem* p_ToroidalOption;
+	wxMenuItem* p_viewNeighbors;
+
 
 public:
 	MainWindow();
@@ -66,6 +71,11 @@ public:
 	void OnSave(wxCommandEvent& _saveEvent);
 	void OnSaveAs(wxCommandEvent& _saveAsEvent);
 	void OnExit(wxCommandEvent& _exitEvent);
+
+	//universeEvents
+	void OnToroidalToggle(wxCommandEvent& _toroidalEvent);
+	void OnFiniteToggle(wxCommandEvent& _finiteEvent);
+	void OnShowCountToggle(wxCommandEvent& _showCountEvent);
 
 	void ClearUniverse();
 
