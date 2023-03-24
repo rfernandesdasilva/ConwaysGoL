@@ -23,7 +23,9 @@ private:
 	wxToolBar* p_toolBar;
 
 	wxTimer* p_timer;
-	//int milliseconds = 50; deprecated, using p_settings->interval
+	
+	//show count
+	std::vector<std::vector<int>> neighborCount;
 
 	wxMenuBar* p_menuBar;
 
@@ -42,6 +44,7 @@ public:
 	int CheckNeighboors(int _row, int _column);
 
 	void CreateNextGen();
+	void RandomSeed(int seed);
 
 	void TimedEvent(wxTimerEvent& _timer);
 

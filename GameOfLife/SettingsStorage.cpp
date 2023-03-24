@@ -2,6 +2,7 @@
 
 wxBEGIN_EVENT_TABLE(SettingsStorage, wxDialog)
 EVT_SPINCTRL(15000,SettingsStorage::OnSpinCtrl)
+EVT_SPINCTRL(15020, SettingsStorage::OnSpinCtrlGrid)
 EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl) // live cell id
 EVT_COLOURPICKER_CHANGED(15054, SettingsStorage::OnColourPickerCtrl) // dead cell id
 EVT_CHECKBOX(15067, SettingsStorage::OnCheckBox)
@@ -14,11 +15,6 @@ SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std:
 
 	// vertically
 	p_sizerMainBox = new wxBoxSizer(wxVERTICAL);
-
-	// unsure if this is correct.
-	// Create a wxBoxSizer pointer for the main box and set it to a new wxBoxSizer.  
-	// Pass in wxVertical as an argument for the new object.  
-	// Using SetSizer, set the main sizer of the window to this sizer.
 
 	this->SetSizer(p_sizerMainBox);
 
@@ -45,10 +41,24 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxSpinCtrl() {
 	// label creation
 	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Interval(ms): //TEMP");
 
-	spinCtrl = new wxSpinCtrl(this, 15000, "Test"); // max at 100 as default
+	wxString intervalStr;
+	intervalStr = wxString::Format("%d", p_settings->interval);
+	spinCtrl = new wxSpinCtrl(this, 15000, intervalStr); // max at 100 as default
 
 	p_sizerSetting->Add(labelCtrl);
 	p_sizerSetting->Add(spinCtrl);
+
+	// gridSize
+	// label creation
+	wxStaticText* labelCtrlGrid = new wxStaticText(this, wxID_ANY, "GridSize(cells): //TEMP");
+
+	wxString gridStr;
+	gridStr = wxString::Format("%d", p_settings->gridSize); // display current values!
+	spinCtrlGrid = new wxSpinCtrl(this, 15020, gridStr); // max at 100 as default
+
+	p_sizerSetting->Add(labelCtrlGrid);
+	p_sizerSetting->Add(spinCtrlGrid);
+
 
 	return p_sizerSetting;
 }
@@ -89,8 +99,12 @@ wxBoxSizer* SettingsStorage::CreateDeadCellSettingBoxClrPicker() {
 // no negative values.
 void SettingsStorage::OnSpinCtrl(wxSpinEvent& _event) {
 	p_settings->interval = _event.GetValue();
-	p_settings->SaveData();
 }
+
+void SettingsStorage::OnSpinCtrlGrid(wxSpinEvent& _event) {
+	p_settings->gridSize = _event.GetValue();
+}
+
 void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 	wxColor color = _event.GetColour();
 
@@ -98,16 +112,16 @@ void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 		p_settings->redLive = color.GetRed();
 		p_settings->greenLive = color.GetGreen();
 		p_settings->blueLive = color.GetBlue();
-		p_settings->SaveData();
+		p_settings->alphaLive = color.GetAlpha();
 	}
 	else {
 		p_settings->redDead = color.GetRed();
 		p_settings->greenDead = color.GetGreen();
 		p_settings->blueDead = color.GetBlue();
-		p_settings->SaveData();
+		p_settings->alphaDead = color.GetAlpha();
 	}
 	
-	//Refresh();
+	p_settings->SaveData();
 }
 
 wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
@@ -123,10 +137,10 @@ wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
 }
 
 void SettingsStorage::OnCheckBox(wxCommandEvent& _checkBoxEvent) {
-	if (_checkBoxEvent.IsChecked()) {
+	if (_checkBoxEvent.IsChecked() && p_settings->showCount == false) {
 		p_settings->showCount = true;
-		
-	}
+		p_settings->SaveData();
+	} // caso: nao está checkado e é true: turn to fasle.
 }
 
 // TODO: 
