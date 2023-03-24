@@ -44,9 +44,16 @@ public:
 	int CheckNeighboors(int _row, int _column);
 
 	void CreateNextGen();
-	void RandomSeed(int seed);
 
 	void TimedEvent(wxTimerEvent& _timer);
+
+	// randomHandlers
+	void OnRandom(wxCommandEvent& _randomEvent);
+	void OnRandomSeed(wxCommandEvent& _rSeedEvent);
+
+	// random helpers
+	void RandomSeed(int seed);
+	void RandomDefault();
 
 	//menuEvent
 	void OnMenu(wxCommandEvent& _menuEvent);

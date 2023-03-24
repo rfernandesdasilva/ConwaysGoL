@@ -3,6 +3,7 @@
 #include "pause.xpm"
 #include "trash.xpm"
 #include "next.xpm"
+#include "wx/numdlg.h"
 
 #include "SettingsStorage.h"
 
@@ -17,6 +18,8 @@ EVT_MENU(20998, MainWindow::PauseButton)
 EVT_MENU(26754, MainWindow::TrashButton)
 EVT_MENU(12345, MainWindow::NextButton)
 EVT_TIMER(14896, MainWindow::TimedEvent)
+EVT_MENU(16821, MainWindow::OnRandom)
+EVT_MENU(12821, MainWindow::OnRandomSeed)
 
 //menuBar
 EVT_MENU(19981,MainWindow::OnMenu) // cell config
@@ -63,8 +66,16 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	wxMenu* p_menuOptions = new wxMenu();
 	p_menuOptions->Append(19981, "Cell Configuration//TEMP"); // append the menuOption
 
+	// Randomize
+	wxMenu* p_randomOptions = new wxMenu();
+	p_randomOptions->AppendSeparator();
+	p_randomOptions->Append(16821, "Randomize with Time");
+	p_randomOptions->Append(12821, "Randomize with Seed");
+
 	// append the menuBar
 	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
+	p_menuBar->Append(p_randomOptions, "Randomize");
+
 
 	//drawing panel
 	p_drawingPanel = new DrawingPanel(this, v_board, neighborCount, p_settings);
@@ -150,17 +161,6 @@ int MainWindow::CheckNeighboors(int _row, int _column) {
 	// i and j have to start on -1 so it checks those ranges first.
 
 	int result = 0;
-	/*for (int i = _row-1; i <= _row+1; i++) {
-		for (int j = _column-1; j <= _column+1; j++) {
-			if (i >= 0 && i < p_settings->gridSize && j >= 0 && j < p_settings->gridSize) {
-				if (i != _row || j != _column) {
-					if (v_board[i][j]) {
-						result++;
-					}
-				}
-			}
-		}
-	}*/
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -255,8 +255,55 @@ void MainWindow::CreateNextGen() {
 	UpdateStatusBar();
 }
 
+void MainWindow::OnRandom(wxCommandEvent& _randomEvent) {
+	RandomDefault();
+
+	for (int i = 0; i < p_settings->gridSize; i++) {
+		for (int j = 0; j < p_settings->gridSize; j++) {
+			int randomValue = rand() % RAND_MAX + 1;
+			if (randomValue % 2 == 0) { // if even
+				v_board[i][j] = true;
+			}
+			else { // if odd
+				v_board[i][j] = false;
+			}
+		}
+	}
+
+	p_drawingPanel->Refresh();
+	generation++;
+	UpdateStatusBar();
+}
+
+void MainWindow::OnRandomSeed(wxCommandEvent& _rSeedEvent) {
+	long seed = 0;
+	seed = wxGetNumberFromUser("Enter a Seed value:", "Number Input", "Seed input:", seed, LONG_MIN, LONG_MAX);
+
+	RandomSeed(seed);
+
+	for (int i = 0; i < p_settings->gridSize; i++) {
+		for (int j = 0; j < p_settings->gridSize; j++) {
+			int randomValue = rand() % RAND_MAX + 1;
+			if (randomValue % 2 == 0) { // if even
+				v_board[i][j] = true;
+			}
+			else { // if odd
+				v_board[i][j] = false;
+			}
+		}
+	}
+
+	p_drawingPanel->Refresh();
+	generation++;
+	UpdateStatusBar();
+}
+
 void MainWindow::RandomSeed(int seed) {
 	srand(seed);
+}
+
+void MainWindow::RandomDefault() {
+	srand(time(NULL));
 }
 
 void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
