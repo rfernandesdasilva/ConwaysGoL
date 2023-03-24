@@ -28,6 +28,8 @@ private:
 	std::vector<std::vector<int>> neighborCount;
 
 	wxMenuBar* p_menuBar;
+	wxString fileName = wxEmptyString;
+
 
 public:
 	MainWindow();
@@ -57,6 +59,15 @@ public:
 
 	//menuEvent
 	void OnMenu(wxCommandEvent& _menuEvent);
+
+	//FileEvents
+	void OnNew(wxCommandEvent& _newEvent);
+	void OnOpen(wxCommandEvent& _openEvent);
+	void OnSave(wxCommandEvent& _saveEvent);
+	void OnSaveAs(wxCommandEvent& _saveAsEvent);
+	void OnExit(wxCommandEvent& _exitEvent);
+
+	void ClearUniverse();
 
 	wxDECLARE_EVENT_TABLE();
 };
