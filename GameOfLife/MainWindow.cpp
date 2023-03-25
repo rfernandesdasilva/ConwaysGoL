@@ -165,6 +165,26 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 		p_viewNeighbors->Check(false);
 	}
 
+	if (p_settings->showGrid) {
+		p_viewGrid->Check(true);
+	}
+	else {
+		p_viewGrid->Check(false);
+	}
+
+	if (p_settings->showThickGrid) {
+		p_viewThickGrid->Check(true);
+	}
+	else {
+		p_viewThickGrid->Check(false);
+	}
+
+	if (p_settings->showThickGrid) {
+		p_viewThickGrid->Check(true);
+	}
+	else {
+		p_viewThickGrid->Check(false);
+	}
 
 	// append the menuBar
 	p_menuBar->Append(p_fileOptions, "File");
