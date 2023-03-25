@@ -42,9 +42,9 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 	p_context->SetPen(*wxBLACK);
 	p_context->SetBrush(*wxWHITE);
 
-	// red = dead next gen
-	// green alive next gen
-	// implement that.
+	if (!p_settings->showGrid) {
+		p_context->SetPen(p_settings->getDeadCellColor());
+	}
 
 	//font for neighbor count
 	p_context->SetFont(wxFontInfo(10), *wxRED);

@@ -34,6 +34,8 @@ private:
 	wxMenuItem* p_FiniteOption;
 	wxMenuItem* p_ToroidalOption;
 	wxMenuItem* p_viewNeighbors;
+	wxMenuItem* p_viewGrid;
+	wxMenuItem* p_viewThickGrid;
 
 
 public:
@@ -78,6 +80,10 @@ public:
 	void OnToroidalToggle(wxCommandEvent& _toroidalEvent);
 	void OnFiniteToggle(wxCommandEvent& _finiteEvent);
 	void OnShowCountToggle(wxCommandEvent& _showCountEvent);
+
+	//grid toggle
+	void OnGridToggle(wxCommandEvent& _gridEvent);
+	void OnThickGridToggle(wxCommandEvent& _thickGridEvent);
 
 	//resetSettings
 	void OnResetSettings(wxCommandEvent& _resetEvent);

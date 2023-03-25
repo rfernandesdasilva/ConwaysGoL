@@ -22,6 +22,7 @@ struct SettingsBar {
 	unsigned int alphaDead;
 
 	bool showGrid;
+	bool showThickGrid;
 
 	// show neighbor count
 	bool showCount;

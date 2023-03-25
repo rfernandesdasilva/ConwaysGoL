@@ -38,7 +38,13 @@ EVT_MENU(16870, MainWindow::OnImport)
 //universeTypes
 EVT_MENU(12785, MainWindow::OnToroidalToggle)
 EVT_MENU(17942, MainWindow::OnFiniteToggle) 
-EVT_MENU(12781, MainWindow::OnShowCountToggle)
+EVT_MENU(12781, MainWindow::OnShowCountToggle) 
+EVT_MENU(11625, MainWindow::OnGridToggle)
+EVT_MENU(11627, MainWindow::OnThickGridToggle)
+
+//// grid but inside the view
+//p_viewGrid = new wxMenuItem(p_viewSettings, 11625, "Grid Toggle", "", wxITEM_CHECK);
+//p_viewThickGrid = new wxMenuItem(p_viewSettings, 11627, "Grid 10x Toggle", "", wxITEM_CHECK);
 
 //reset settigns
 EVT_MENU(14539, MainWindow::OnResetSettings)
@@ -114,14 +120,24 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_FiniteOption = new wxMenuItem(p_viewSettings, 17942, "Finite Toggle", "", wxITEM_CHECK);
 	p_ToroidalOption = new wxMenuItem(p_viewSettings, 12785, "Toroidal Toggle", "", wxITEM_CHECK);
 	p_viewNeighbors = new wxMenuItem(p_viewSettings, 12781, "Display Neighbor Count", "", wxITEM_CHECK);
+
+	// grid but inside the view
+	p_viewGrid = new wxMenuItem(p_viewSettings, 11625, "Grid Toggle", "", wxITEM_CHECK);
+	p_viewThickGrid = new wxMenuItem(p_viewSettings, 11627, "Grid 10x Toggle", "", wxITEM_CHECK);
 	
 	p_FiniteOption->SetCheckable(true);
 	p_ToroidalOption->SetCheckable(true);
 	p_viewNeighbors->SetCheckable(true);
 
+	p_viewGrid->SetCheckable(true);
+	p_viewThickGrid->SetCheckable(true);
+
 	p_viewSettings->Append(p_FiniteOption);
 	p_viewSettings->Append(p_ToroidalOption);
 	p_viewSettings->Append(p_viewNeighbors);
+
+	p_viewSettings->Append(p_viewGrid);
+	p_viewSettings->Append(p_viewThickGrid);
 
 	//check if it is true already
 	/*if (p_settings->isFinite) {
@@ -577,6 +593,34 @@ void MainWindow::OnShowCountToggle(wxCommandEvent& _showCountEvent) {
 	else {
 		p_viewNeighbors->Check(false);
 		p_settings->showCount = false;
+	}
+	p_drawingPanel->Refresh();
+	UpdateStatusBar();
+	p_settings->SaveData();
+}
+
+void MainWindow::OnGridToggle(wxCommandEvent& _gridEvent) {
+	if (!p_settings->showGrid) {
+		p_viewGrid->Check(true);
+		p_settings->showGrid = true;
+	}
+	else {
+		p_viewGrid->Check(false);
+		p_settings->showGrid = false;
+	}
+	p_drawingPanel->Refresh();
+	UpdateStatusBar();
+	p_settings->SaveData();
+}
+
+void MainWindow::OnThickGridToggle(wxCommandEvent& _thickGridEvent) {
+	if (!p_settings->showThickGrid) {
+		p_viewThickGrid->Check(true);
+		p_settings->showThickGrid = true;
+	}
+	else {
+		p_viewThickGrid->Check(false);
+		p_settings->showThickGrid = false;
 	}
 	p_drawingPanel->Refresh();
 	UpdateStatusBar();
