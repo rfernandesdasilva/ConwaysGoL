@@ -71,11 +71,15 @@ public:
 	void OnSave(wxCommandEvent& _saveEvent);
 	void OnSaveAs(wxCommandEvent& _saveAsEvent);
 	void OnExit(wxCommandEvent& _exitEvent);
+	void OnImport(wxCommandEvent& _importEvent);
 
 	//universeEvents
 	void OnToroidalToggle(wxCommandEvent& _toroidalEvent);
 	void OnFiniteToggle(wxCommandEvent& _finiteEvent);
 	void OnShowCountToggle(wxCommandEvent& _showCountEvent);
+
+	//resetSettings
+	void OnResetSettings(wxCommandEvent& _resetEvent);
 
 	void ClearUniverse();
 

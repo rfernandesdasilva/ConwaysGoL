@@ -33,11 +33,15 @@ EVT_MENU(wxID_OPEN, MainWindow::OnOpen)
 EVT_MENU(wxID_SAVE, MainWindow::OnSave)
 EVT_MENU(wxID_SAVEAS, MainWindow::OnSaveAs)
 EVT_MENU(wxID_EXIT, MainWindow::OnExit)
+EVT_MENU(16870, MainWindow::OnImport)
 
 //universeTypes
 EVT_MENU(12785, MainWindow::OnToroidalToggle)
 EVT_MENU(17942, MainWindow::OnFiniteToggle) 
 EVT_MENU(12781, MainWindow::OnShowCountToggle)
+
+//reset settigns
+EVT_MENU(14539, MainWindow::OnResetSettings)
 
 //menuBar
 EVT_MENU(19981,MainWindow::OnMenu) // cell config
@@ -46,6 +50,10 @@ wxEND_EVENT_TABLE()
 
 MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	wxPoint(0,0), wxSize(400,400)) {
+
+	// settings
+	p_settings = new SettingsBar();
+	p_settings->LoadData();
 
 	// statusBar stuff
 	p_statusBar = CreateStatusBar();
@@ -72,17 +80,15 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 
 	p_toolBar->Realize(); // render the icons onto the screen
 
-	// settings
-	p_settings = new SettingsBar();
-	p_settings->LoadData();
-
 	// menuBar
 	p_menuBar = new wxMenuBar();
 	this->SetMenuBar(p_menuBar);
 
 	// menu Options - Cell Configuration
 	wxMenu* p_menuOptions = new wxMenu();
-	p_menuOptions->Append(19981, "Cell Configuration//TEMP"); // append the menuOption
+	p_menuOptions->Append(19981, "Cell Configuration//TEMP");
+	p_menuOptions->AppendSeparator();
+	p_menuOptions->Append(14539, "Reset Settings");
 
 	// Randomize
 	wxMenu* p_randomOptions = new wxMenu();
@@ -97,7 +103,9 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_fileOptions->Append(wxID_SAVE, "&Save\tCtrl+S");
 	p_fileOptions->Append(wxID_SAVEAS, "Save &As\tCtrl+Shift+S");
 	p_fileOptions->AppendSeparator();
+	p_fileOptions->Append(16870, "Import\tCtrl+I");
 	p_fileOptions->Append(wxID_EXIT, "E&xit\tAlt+F4");
+
 
 	// view Settings
 	p_viewSettings = new wxMenu();
@@ -112,6 +120,24 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_viewSettings->Append(p_FiniteOption);
 	p_viewSettings->Append(p_ToroidalOption);
 	p_viewSettings->Append(p_viewNeighbors);
+
+	//check if it is true already
+	if (p_settings->isFinite) {
+		p_FiniteOption->Check(true);
+		p_ToroidalOption->Check(false);
+	}
+	else {
+		p_FiniteOption->Check(false);
+		p_ToroidalOption->Check(true);
+	}
+
+	if (p_settings->showCount) {
+		p_viewNeighbors->Check(true);
+	}
+	else {
+		p_viewNeighbors->Check(false);
+	}
+
 
 	// append the menuBar
 	p_menuBar->Append(p_fileOptions, "File");
@@ -135,7 +161,7 @@ MainWindow::~MainWindow() {
 };
 
 void MainWindow::UpdateStatusBar() {
-	wxString statusText = wxString::Format("Generation: %d, Living Cells: %d", generation, livingCells);
+	wxString statusText = wxString::Format("Generation: %d, Living Cells: %d, Show Neighbor: %s", generation, livingCells, std::to_string(p_settings->showCount));
 	p_statusBar->SetStatusText(statusText);
 }
 
@@ -361,6 +387,9 @@ void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
 }
 
 void MainWindow::ClearUniverse() {
+	generation = 0;
+	livingCells = 0;
+
 	for (int i = 0; i < p_settings->gridSize; i++) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
 			v_board[i][j] = false;
@@ -425,8 +454,8 @@ void MainWindow::OnOpen(wxCommandEvent& _openEvent) {
 
 	// Update the display
 	p_drawingPanel->Refresh();
+	UpdateStatusBar();
 }
-
 
 void MainWindow::OnSave(wxCommandEvent& _saveEvent) {
 	// If the filename has not been set yet, use Save As
@@ -536,6 +565,63 @@ void MainWindow::OnShowCountToggle(wxCommandEvent& _showCountEvent) {
 		p_viewNeighbors->Check(false);
 		p_settings->showCount = false;
 	}
+	p_drawingPanel->Refresh();
+	UpdateStatusBar();
+}
+
+void MainWindow::OnResetSettings(wxCommandEvent& _resetEvent) {
+	p_settings->resetSettings();
+	p_drawingPanel->Refresh();
+}
+
+void MainWindow::OnImport(wxCommandEvent& _importEvent) {
+	// Open the file dialog to choose a file
+	wxFileDialog openFileDialog(this, _("Open .cells file"), "", "",
+		"Cells files (*.cells)|*.cells", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	// Reset the universe and delete any saved filename
+	ClearUniverse();
+	fileName.clear();
+	fileName = openFileDialog.GetPath();
+
+	// Open the file for reading
+	std::ifstream infile(openFileDialog.GetPath().ToStdString());
+
+	// Read the contents of the file into the universe
+	std::string line;
+	int row = 0, col = 0;
+	while (std::getline(infile, line))
+	{
+		// !comments - there is nothing to comment? lol!
+		if (line.empty() || line[0] == '!') {
+			continue;
+		}
+
+		if (row == 0)
+		{
+			p_settings->gridSize = line.size(); // if the gridSize is bigger for some reason
+		}
+
+		// Iterate through the characters in the line and set the corresponding cell
+		for (col = 0; col < line.size(); ++col)
+		{
+			if (line[col] == '*')
+			{
+				v_board[row][col] = true;
+			}
+		}
+		++row;
+	}
+
+	// Close the file
+	infile.close();
+
+	// Update the display
+	p_drawingPanel->Refresh();
+	UpdateStatusBar();
 }
 
 

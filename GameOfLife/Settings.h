@@ -28,12 +28,12 @@ struct SettingsBar {
 	unsigned int bgAlpha;
 
 	// show neighbor count
-	bool showCount;
+	bool showCount = false;
 	std::vector<std::vector<int>> neighborCount;
 
 	// universe type
-	bool isToroidal;
-	bool isFinite;
+	bool isToroidal = true;
+	bool isFinite = false;
 
 	wxColor getLiveCellColor() {
 		// get uints and change to wxcolor
@@ -64,6 +64,41 @@ struct SettingsBar {
 		bgGreen = _bgColor.GetGreen();
 		bgBlue = _bgColor.GetBlue();
 		bgAlpha = _bgColor.GetAlpha();
+	}
+
+	void resetSettings() {
+		SettingsBar* temp = new SettingsBar();
+
+		gridSize = temp->gridSize;
+		interval = temp->interval;
+
+		// live cells color, rgb
+		redLive = temp->redLive;
+		greenLive = temp->greenLive;
+		blueLive = temp->blueLive;
+		alphaLive = temp->alphaLive;
+
+		// dead cells color, rgb
+		redDead = temp->redDead;
+		greenDead = temp->greenDead;
+		blueDead = temp->blueDead;
+		alphaDead = temp->alphaDead;
+
+		// backGround color
+		bgRed = temp->bgRed;
+		bgGreen = temp->bgGreen;
+		bgBlue = temp->bgBlue;
+		bgAlpha = temp->bgAlpha;
+
+		// show neighbor count
+		showCount = temp->showCount;
+		neighborCount = temp->neighborCount;
+
+		// universe type
+		isToroidal = temp->isToroidal;
+		isFinite = temp->isFinite;
+
+		delete temp;
 	}
 
 	void LoadData() {
