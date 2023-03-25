@@ -10,7 +10,7 @@
 class SettingsStorage : public wxDialog
 {
 public:
-	SettingsStorage(wxWindow* _parent, SettingsBar* t_settings, std::string labelName);
+	SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName);
 	~SettingsStorage();
 
 	wxBoxSizer* CreateSettingBoxSpinCtrl(); // created these methods more for organization and reading clarity
@@ -21,7 +21,6 @@ public:
 	void OnSpinCtrlGrid(wxSpinEvent& _event);
 	void OnColourPickerCtrl(wxColourPickerEvent& _event);
 
-	wxBoxSizer* CreateNeighborCountCheckBox();
 	void OnCheckBox(wxCommandEvent& _checkBoxEvent);
 
 	wxDECLARE_EVENT_TABLE();

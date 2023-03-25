@@ -10,30 +10,26 @@ struct SettingsBar {
 	int interval = 50;
 
 	// live cells color, rgb
-	unsigned int redLive;
-	unsigned int greenLive;
-	unsigned int blueLive;
-	unsigned int alphaLive;
+	unsigned int redLive = 136;
+	unsigned int greenLive = 136;
+	unsigned int blueLive = 136;
+	unsigned int alphaLive = 255;
 
 	// dead cells color, rgb
-	unsigned int redDead;
-	unsigned int greenDead;
-	unsigned int blueDead;
+	unsigned int redDead = 255;
+	unsigned int greenDead = 255;
+	unsigned int blueDead = 255;
 	unsigned int alphaDead;
 
-	// backGround color
-	unsigned int bgRed;
-	unsigned int bgGreen;
-	unsigned int bgBlue;
-	unsigned int bgAlpha;
+	bool showGrid;
 
 	// show neighbor count
-	bool showCount = false;
+	bool showCount;
 	std::vector<std::vector<int>> neighborCount;
 
 	// universe type
 	bool isToroidal = true;
-	bool isFinite = false;
+	bool isFinite;
 
 	wxColor getLiveCellColor() {
 		// get uints and change to wxcolor
@@ -59,13 +55,6 @@ struct SettingsBar {
 		alphaDead = _deadColor.GetAlpha();
 	}
 
-	void setBgColor(wxColor _bgColor) {
-		bgRed = _bgColor.GetRed();
-		bgGreen = _bgColor.GetGreen();
-		bgBlue = _bgColor.GetBlue();
-		bgAlpha = _bgColor.GetAlpha();
-	}
-
 	void resetSettings() {
 		SettingsBar* temp = new SettingsBar();
 
@@ -83,12 +72,6 @@ struct SettingsBar {
 		greenDead = temp->greenDead;
 		blueDead = temp->blueDead;
 		alphaDead = temp->alphaDead;
-
-		// backGround color
-		bgRed = temp->bgRed;
-		bgGreen = temp->bgGreen;
-		bgBlue = temp->bgBlue;
-		bgAlpha = temp->bgAlpha;
 
 		// show neighbor count
 		showCount = temp->showCount;

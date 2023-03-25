@@ -7,9 +7,9 @@ EVT_COLOURPICKER_CHANGED(15051,SettingsStorage::OnColourPickerCtrl) // live cell
 EVT_COLOURPICKER_CHANGED(15054, SettingsStorage::OnColourPickerCtrl) // dead cell id
 wxEND_EVENT_TABLE()
 
-SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName) 
-	: wxDialog(_parent, wxID_ANY, labelName) { // passed labelName to change windowName based on which configuration
-	
+
+SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std::string labelName) : wxDialog(_parent, wxID_ANY, labelName)
+{
 	p_settings = _settings;
 
 	// vertically
@@ -17,15 +17,16 @@ SettingsStorage::SettingsStorage(wxWindow* _parent, SettingsBar* _settings, std:
 
 	this->SetSizer(p_sizerMainBox);
 
-	//childSizers
-	// label wxStaticText control(this, id, text), wxSpingCtrl
-	p_sizerMainBox->Add(CreateSettingBoxSpinCtrl());
-	// label wxStaticText control(this, id, text), wxColourPickerCtrl 
-	p_sizerMainBox->Add(CreateLiveCellSettingBoxClrPicker()); 
-	p_sizerMainBox->Add(CreateDeadCellSettingBoxClrPicker());
+	if (labelName == "Cell Options") {
+		p_sizerMainBox->Add(CreateSettingBoxSpinCtrl(), wxSizerFlags().Align(wxALIGN_CENTER));
+	} 
+	if (labelName == "Color Options") {
+		p_sizerMainBox->Add(CreateLiveCellSettingBoxClrPicker(), wxSizerFlags().Align(wxALIGN_CENTER));
+		p_sizerMainBox->Add(CreateDeadCellSettingBoxClrPicker(), wxSizerFlags().Align(wxALIGN_CENTER));
+	}
 
 	wxSizer* button = CreateButtonSizer(wxOK | wxCANCEL);
-	p_sizerMainBox->Add(button);
+	p_sizerMainBox->Add(button, wxALIGN_BOTTOM | wxALIGN_CENTER_HORIZONTAL | wxALL);
 }
 
 SettingsStorage::~SettingsStorage() {
@@ -33,10 +34,10 @@ SettingsStorage::~SettingsStorage() {
 }
 
 wxBoxSizer* SettingsStorage::CreateSettingBoxSpinCtrl() {
-	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxVERTICAL);
 	
 	// label creation
-	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Interval(ms): //TEMP");
+	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Interval(ms): ");
 
 	wxString intervalStr;
 	intervalStr = wxString::Format("%d", p_settings->interval);
@@ -47,7 +48,7 @@ wxBoxSizer* SettingsStorage::CreateSettingBoxSpinCtrl() {
 
 	// gridSize
 	// label creation
-	wxStaticText* labelCtrlGrid = new wxStaticText(this, wxID_ANY, "GridSize(cells): //TEMP");
+	wxStaticText* labelCtrlGrid = new wxStaticText(this, wxID_ANY, "GridSize(cells): ");
 
 	wxString gridStr;
 	gridStr = wxString::Format("%d", p_settings->gridSize); // display current values!
@@ -64,7 +65,7 @@ wxBoxSizer* SettingsStorage::CreateLiveCellSettingBoxClrPicker() {
 	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
 
 	// label creation
-	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Live Cell Color: //TEMP");
+	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Live Cell Color:");
 
 	// getLive color here just sets the color of the box to the color picked 
 	colorCtrl = new wxColourPickerCtrl(this, 15051);
@@ -80,7 +81,7 @@ wxBoxSizer* SettingsStorage::CreateDeadCellSettingBoxClrPicker() {
 	wxBoxSizer* p_sizerSetting = new wxBoxSizer(wxHORIZONTAL);
 	
 	// label creation
-	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Dead Cell Color: //TEMP");
+	wxStaticText* labelCtrl = new wxStaticText(this, wxID_ANY, "Dead Cell Color: ");
 
 	// getDead color here just sets the color of the box to the color picked 
 	colorCtrl = new wxColourPickerCtrl(this, 15054); 
@@ -119,18 +120,6 @@ void SettingsStorage::OnColourPickerCtrl(wxColourPickerEvent& _event) {
 	}
 	
 	p_settings->SaveData();
-}
-
-wxBoxSizer* SettingsStorage::CreateNeighborCountCheckBox() {
-	wxCheckBox* checkBox = new wxCheckBox(this, 15067, "Show Neighbor Count: //TEMP");
-	checkBox->SetValue(false);
-
-	wxBoxSizer* p_checkBoxSizer = new wxBoxSizer(wxHORIZONTAL);
-	p_checkBoxSizer->AddStretchSpacer();
-	p_checkBoxSizer->Add(checkBox, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL);
-	p_checkBoxSizer->AddStretchSpacer();
-	
-	return p_checkBoxSizer;
 }
 
 

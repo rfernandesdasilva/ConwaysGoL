@@ -44,7 +44,8 @@ EVT_MENU(12781, MainWindow::OnShowCountToggle)
 EVT_MENU(14539, MainWindow::OnResetSettings)
 
 //menuBar
-EVT_MENU(19981,MainWindow::OnMenu) // cell config
+EVT_MENU(19981,MainWindow::OnMenuColor) // cell config 19921
+EVT_MENU(19921, MainWindow::OnMenuCell)
 wxEND_EVENT_TABLE()
 
 
@@ -86,7 +87,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 
 	// menu Options - Cell Configuration
 	wxMenu* p_menuOptions = new wxMenu();
-	p_menuOptions->Append(19981, "Cell Configuration//TEMP");
+	p_menuOptions->Append(19981, "Color Options");
+	p_menuOptions->Append(19921, "Cell Options");
 	p_menuOptions->AppendSeparator();
 	p_menuOptions->Append(14539, "Reset Settings");
 
@@ -122,7 +124,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_viewSettings->Append(p_viewNeighbors);
 
 	//check if it is true already
-	if (p_settings->isFinite) {
+	/*if (p_settings->isFinite) {
 		p_FiniteOption->Check(true);
 		p_ToroidalOption->Check(false);
 	}
@@ -136,7 +138,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	}
 	else {
 		p_viewNeighbors->Check(false);
-	}
+	}*/
 
 
 	// append the menuBar
@@ -275,7 +277,6 @@ void MainWindow::TimedEvent(wxTimerEvent& _timer) {
 }
 
 void MainWindow::CreateNextGen() {
-	p_settings->LoadData(); // need to grab new grid size!
 
 	std::vector<std::vector<bool>> sandbox;
 	sandbox.resize(p_settings->gridSize);
@@ -374,15 +375,27 @@ void MainWindow::RandomDefault() {
 	srand(time(NULL));
 }
 
-void MainWindow::OnMenu(wxCommandEvent& _menuEvent) {
+void MainWindow::OnMenuColor(wxCommandEvent& _menuColorEvent) {
 	p_settings->LoadData();
-	p_settingsDialog = new SettingsStorage(this, p_settings, "Cell Color");
+	p_settingsDialog = new SettingsStorage(this, p_settings, "Color Options");
 	p_settingsDialog->ShowModal();
 	
 	if (p_settingsDialog->ShowModal() == wxID_OK) {
 		InitGrid();
 		p_settings->SaveData();
-		Refresh(); //idk what this makes
+		Refresh(); 
+	}
+}
+
+void MainWindow::OnMenuCell(wxCommandEvent& _menuCellEvent) {
+	p_settings->LoadData();
+	p_settingsDialog = new SettingsStorage(this, p_settings, "Cell Options");
+	p_settingsDialog->ShowModal();
+
+	if (p_settingsDialog->ShowModal() == wxID_OK) {
+		InitGrid();
+		p_settings->SaveData();
+		Refresh();
 	}
 }
 
@@ -567,10 +580,12 @@ void MainWindow::OnShowCountToggle(wxCommandEvent& _showCountEvent) {
 	}
 	p_drawingPanel->Refresh();
 	UpdateStatusBar();
+	p_settings->SaveData();
 }
 
 void MainWindow::OnResetSettings(wxCommandEvent& _resetEvent) {
 	p_settings->resetSettings();
+	UpdateStatusBar();
 	p_drawingPanel->Refresh();
 }
 

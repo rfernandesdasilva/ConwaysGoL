@@ -63,7 +63,8 @@ public:
 	void RandomDefault();
 
 	//menuEvent
-	void OnMenu(wxCommandEvent& _menuEvent);
+	void OnMenuColor(wxCommandEvent& _menuColorEvent);
+	void OnMenuCell(wxCommandEvent& _menuCellEvent);
 
 	//FileEvents
 	void OnNew(wxCommandEvent& _newEvent);
