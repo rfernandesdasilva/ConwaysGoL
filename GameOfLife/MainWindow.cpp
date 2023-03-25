@@ -160,7 +160,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	// append the menuBar
 	p_menuBar->Append(p_fileOptions, "File");
 	p_menuBar->Append(p_viewSettings, "View");
-	p_menuBar->Append(p_menuOptions, "Configuration//TEMP");
+	p_menuBar->Append(p_menuOptions, "Settings");
 	p_menuBar->Append(p_randomOptions, "Randomize");
 
 	//drawing panel
