@@ -13,6 +13,8 @@ public:
 	void SetGridSize(int _gridSize);
 	void OnClick(wxMouseEvent& _mouseEvent);
 
+	wxString DrawHud();
+
 	wxDECLARE_EVENT_TABLE();
 private:
 	int cellSize = 10; // hardcoded for now

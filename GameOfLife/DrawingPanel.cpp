@@ -92,6 +92,15 @@ void DrawingPanel::OnPaint(wxPaintEvent& event) {
 		}
 	}
 
+	// Draw the HUD text if enabled
+	if (p_settings->showHud) {
+		p_context->SetFont(wxFontInfo(15), *wxRED);
+		double textWidth, textHeight;
+
+		p_context->GetTextExtent(DrawHud(), &textWidth, &textHeight);
+		p_context->DrawText(DrawHud(), 10, GetSize().y - textHeight - 10);
+	}
+
 	delete p_context;
 }
 
@@ -122,5 +131,21 @@ void DrawingPanel::OnClick(wxMouseEvent& _mouseEvent) {
 		r_board[column][row] = true;
 	}
 	Refresh();
+}
+
+wxString DrawingPanel::DrawHud() {
+
+	wxString boundaryType;
+	if (p_settings->isFinite) {
+		boundaryType = "Finite";
+	}
+	else {
+		boundaryType = "Toroidal";
+	}
+
+	wxString hudText = wxString::Format("Generations: %d, Living Cells: %d, Boundary Type: %s, Universe Size: %d",
+		p_settings->_generation, p_settings->_livingCells, boundaryType, p_settings->gridSize);
+
+	return hudText;
 }
 

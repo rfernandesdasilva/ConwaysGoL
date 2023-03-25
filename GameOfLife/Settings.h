@@ -9,6 +9,9 @@ struct SettingsBar {
 	int gridSize = 15;
 	int interval = 50;
 
+	int _generation;
+	int _livingCells;
+
 	// live cells color, rgb
 	unsigned int redLive = 136;
 	unsigned int greenLive = 136;
@@ -21,8 +24,12 @@ struct SettingsBar {
 	unsigned int blueDead = 255;
 	unsigned int alphaDead;
 
+	//gridOptions
 	bool showGrid;
 	bool showThickGrid;
+
+	//showHud
+	bool showHud;
 
 	// show neighbor count
 	bool showCount;

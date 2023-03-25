@@ -36,6 +36,7 @@ private:
 	wxMenuItem* p_viewNeighbors;
 	wxMenuItem* p_viewGrid;
 	wxMenuItem* p_viewThickGrid;
+	wxMenuItem* p_viewHud;
 
 
 public:
@@ -84,6 +85,8 @@ public:
 	//grid toggle
 	void OnGridToggle(wxCommandEvent& _gridEvent);
 	void OnThickGridToggle(wxCommandEvent& _thickGridEvent);
+
+	void OnHudToggle(wxCommandEvent& _hudEvent);
 
 	//resetSettings
 	void OnResetSettings(wxCommandEvent& _resetEvent);

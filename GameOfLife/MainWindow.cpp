@@ -41,6 +41,7 @@ EVT_MENU(17942, MainWindow::OnFiniteToggle)
 EVT_MENU(12781, MainWindow::OnShowCountToggle) 
 EVT_MENU(11625, MainWindow::OnGridToggle)
 EVT_MENU(11627, MainWindow::OnThickGridToggle)
+EVT_MENU(12788, MainWindow::OnHudToggle) // 12788
 
 //// grid but inside the view
 //p_viewGrid = new wxMenuItem(p_viewSettings, 11625, "Grid Toggle", "", wxITEM_CHECK);
@@ -65,7 +66,9 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	// statusBar stuff
 	p_statusBar = CreateStatusBar();
 	livingCells = 0;
+	p_settings->_generation = 0;
 	generation = 0;
+	p_settings->_livingCells = 0;
 	UpdateStatusBar();
 
 	p_timer = new wxTimer(this, 14896); // randomID
@@ -124,6 +127,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	// grid but inside the view
 	p_viewGrid = new wxMenuItem(p_viewSettings, 11625, "Grid Toggle", "", wxITEM_CHECK);
 	p_viewThickGrid = new wxMenuItem(p_viewSettings, 11627, "Grid 10x Toggle", "", wxITEM_CHECK);
+
+	p_viewHud = new wxMenuItem(p_viewSettings, 12788, "HUD Toggle", "", wxITEM_CHECK);
 	
 	p_FiniteOption->SetCheckable(true);
 	p_ToroidalOption->SetCheckable(true);
@@ -132,6 +137,8 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_viewGrid->SetCheckable(true);
 	p_viewThickGrid->SetCheckable(true);
 
+	p_viewHud->SetCheckable(true);
+
 	p_viewSettings->Append(p_FiniteOption);
 	p_viewSettings->Append(p_ToroidalOption);
 	p_viewSettings->Append(p_viewNeighbors);
@@ -139,8 +146,10 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	p_viewSettings->Append(p_viewGrid);
 	p_viewSettings->Append(p_viewThickGrid);
 
+	p_viewSettings->Append(p_viewHud);
+
 	//check if it is true already
-	/*if (p_settings->isFinite) {
+	if (p_settings->isFinite) {
 		p_FiniteOption->Check(true);
 		p_ToroidalOption->Check(false);
 	}
@@ -154,7 +163,7 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Sample Title",
 	}
 	else {
 		p_viewNeighbors->Check(false);
-	}*/
+	}
 
 
 	// append the menuBar
@@ -217,6 +226,8 @@ void MainWindow::PauseButton(wxCommandEvent& _pauseEvent) {
 void MainWindow::TrashButton(wxCommandEvent& _trashEvent) {
 	livingCells = 0;
  	generation = 0;
+	p_settings->_generation = 0;
+	p_settings->_livingCells = 0;
 
 	for (int i = 0; i < p_settings->gridSize; i++) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
@@ -337,6 +348,8 @@ void MainWindow::CreateNextGen() {
 
 	p_drawingPanel->Refresh();
 	generation++;
+	p_settings->_generation = generation;
+	p_settings->_livingCells = livingCells;
 	UpdateStatusBar();
 }
 
@@ -357,6 +370,7 @@ void MainWindow::OnRandom(wxCommandEvent& _randomEvent) {
 
 	p_drawingPanel->Refresh();
 	generation++;
+	p_settings->_generation = generation;
 	UpdateStatusBar();
 }
 
@@ -380,6 +394,7 @@ void MainWindow::OnRandomSeed(wxCommandEvent& _rSeedEvent) {
 
 	p_drawingPanel->Refresh();
 	generation++;
+	p_settings->_generation = generation;
 	UpdateStatusBar();
 }
 
@@ -417,7 +432,9 @@ void MainWindow::OnMenuCell(wxCommandEvent& _menuCellEvent) {
 
 void MainWindow::ClearUniverse() {
 	generation = 0;
+	p_settings->_generation = 0;
 	livingCells = 0;
+	p_settings->_livingCells = 0;
 
 	for (int i = 0; i < p_settings->gridSize; i++) {
 		for (int j = 0; j < p_settings->gridSize; j++) {
@@ -625,6 +642,21 @@ void MainWindow::OnThickGridToggle(wxCommandEvent& _thickGridEvent) {
 	p_drawingPanel->Refresh();
 	UpdateStatusBar();
 	p_settings->SaveData();
+}
+
+void MainWindow::OnHudToggle(wxCommandEvent& _hudEvent) {
+	if (!p_settings->showHud) {
+		p_viewHud->Check(true);
+		p_settings->showHud = true;
+	}
+	else {
+		p_viewHud->Check(false);
+		p_settings->showHud = false;
+	}
+	p_drawingPanel->Refresh();
+	UpdateStatusBar();
+	p_settings->SaveData();
+
 }
 
 void MainWindow::OnResetSettings(wxCommandEvent& _resetEvent) {
